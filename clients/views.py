@@ -6,7 +6,6 @@ from rest_framework.decorators import action
 from datetime import timedelta
 from django.utils import timezone
 from conversations.models import Conversation
-from ai.prompts import system_prompt
 from ai.utils import generate_ai_message
 
 
@@ -31,6 +30,13 @@ class ClientViewSet(viewsets.ModelViewSet):
         serializer = ClientListSerializer(clients, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
+    @action(detail=False, methods=['get'], url_path='has-active-debts')
+    def clients_with_active_debts(self, request):
+        today = timezone.now().date()
+        clients_with_active_debts = Client.objects.filter(debts__due_date__gt=today).distinct()
+        serializer = ClientListSerializer(clients_with_active_debts, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
     @action(detail=True, methods=['get'], url_path='generate-message')
     def generate_message(self, request, pk=None):
         try:
@@ -44,7 +50,7 @@ class ClientViewSet(viewsets.ModelViewSet):
         # Generar el mensaje usando OpenAI
         ai_message_content = generate_ai_message(client.name, client_has_debts)
 
-        # Guardar el mensaje en el modelo Conversation
+        # Guardar el mensaje en Conversation
         Conversation.objects.create(
             client=client,
             text=ai_message_content,
@@ -52,5 +58,4 @@ class ClientViewSet(viewsets.ModelViewSet):
             sent_at=timezone.now()
         )
 
-        # Devolver solo el texto del mensaje generado
         return Response({"text": ai_message_content}, status=status.HTTP_200_OK)

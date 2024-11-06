@@ -4,12 +4,11 @@ import os
 BRANCHES_FILE_PATH = os.path.join(os.path.dirname(__file__), "branches.json")
 
 def system_prompt(client_has_debts, client_name):    
-    # Leer el catálogo de autos desde el archivo JSON
     with open(BRANCHES_FILE_PATH, "r") as f:
         branches_data = json.load(f)
 
     # Crear el saludo y el listado de autos y sucursales
-    greeting = f"Eres un asistente virtual de una red de automotoras que atiende a sus clientes. Eres amable y pareces humano. Recuerda que el nombre del cliente es {client_name}."
+    greeting = f"Eres un asistente virtual de la automotora Kaufmann que atiende a sus clientes. Eres amable y pareces humano. Recuerda que el nombre del cliente es {client_name}."
     catalog = "\n".join([f"{branch}: " + "; ".join(f"{car['brand']} {car['model']} ({car['type']})" for car in cars) for branch, cars in branches_data.items()])
 
     if client_has_debts:
