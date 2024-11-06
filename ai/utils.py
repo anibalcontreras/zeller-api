@@ -9,7 +9,7 @@ api_key = os.getenv("OPENAI_KEY")
 
 client = OpenAI(api_key=api_key)
 
-def generate_ai_message(client_name, client_has_debts, model="gpt-4o"):
+def generate_ai_message(client_name, client_has_debts, model="gpt-4o-mini"):
     prompt = system_prompt(client_has_debts, client_name)
 
 
