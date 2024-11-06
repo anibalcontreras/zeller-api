@@ -13,7 +13,6 @@ class ClientSerializer(serializers.ModelSerializer):
         model = Client
         fields = ["id", "name", "rut", "conversations", "debts"]
 
-
 class ClientListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Client
