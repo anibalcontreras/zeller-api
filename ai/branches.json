@@ -1,0 +1,28 @@
+{
+  "Sucursal Sur": [
+    {
+      "type": "nuevo",
+      "brand": "Mercedes Benz",
+      "model": "Clase A"
+    },
+    {
+      "type": "nuevo",
+      "brand": "Mercedes Benz",
+      "model": "GLC Coupe AMG"
+    }
+  ],
+  "Sucursal Central": [
+    {
+      "type": "nuevo",
+      "brand": "Mercedes Benz",
+      "model": "Clase G"
+    }
+  ],
+  "Sucursal Norte": [
+    {
+      "type": "nuevo",
+      "brand": "Mercedes Benz",
+      "model": "EQS"
+    }
+  ]
+}

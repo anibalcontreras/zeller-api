@@ -5,6 +5,9 @@ from .serializers import ClientSerializer, ClientListSerializer
 from rest_framework.decorators import action
 from datetime import timedelta
 from django.utils import timezone
+from conversations.models import Conversation
+from ai.prompts import system_prompt
+from ai.utils import generate_ai_message
 
 
 class ClientViewSet(viewsets.ModelViewSet):
@@ -27,3 +30,27 @@ class ClientViewSet(viewsets.ModelViewSet):
         clients = Client.objects.filter(conversations__sent_at__lt=seven_days_ago).distinct()
         serializer = ClientListSerializer(clients, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    @action(detail=True, methods=['get'], url_path='generate-message')
+    def generate_message(self, request, pk=None):
+        try:
+            client = Client.objects.get(pk=pk)
+        except Client.DoesNotExist:
+            return Response({"detail": "Cliente no encontrado."}, status=status.HTTP_404_NOT_FOUND)
+        
+        # Verificar si el cliente tiene deudas
+        client_has_debts = client.debts.exists()
+        
+        # Generar el mensaje usando OpenAI
+        ai_message_content = generate_ai_message(client.name, client_has_debts)
+
+        # Guardar el mensaje en el modelo Conversation o Message
+        Conversation.objects.create(
+            client=client,
+            text=ai_message_content,
+            role="assistant",
+            sent_at=timezone.now()
+        )
+
+        # Devolver solo el texto del mensaje generado
+        return Response({"text": ai_message_content}, status=status.HTTP_200_OK)
