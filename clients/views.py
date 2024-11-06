@@ -16,12 +16,6 @@ class ClientViewSet(viewsets.ModelViewSet):
         if self.action == "list" or self.action == "create":
             return ClientListSerializer
         return ClientSerializer
-
-    def destroy(self, request, *args, **kwargs):
-        return Response(
-            {"detail": "You are not allowed to delete clients."},
-            status=status.HTTP_405_METHOD_NOT_ALLOWED,
-        )
     
     @action(detail=False, methods=['get'], url_path='to-do-follow-up')
     def clients_to_do_follow_up(self, request):
@@ -59,3 +53,9 @@ class ClientViewSet(viewsets.ModelViewSet):
         )
 
         return Response({"text": ai_message_content}, status=status.HTTP_200_OK)
+    
+    def destroy(self, request, *args, **kwargs):
+        return Response(
+            {"detail": "You are not allowed to delete clients."},
+            status=status.HTTP_405_METHOD_NOT_ALLOWED,
+        )
