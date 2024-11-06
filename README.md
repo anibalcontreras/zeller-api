@@ -47,7 +47,13 @@ Por otro lado, para seguir principios SOLID, la creación de clientes, conversat
 Los body son los mismos que se sugieren en el enunciado.
 
 También el endpoint GET /clients-to-do-follow-up fue cambiado por GET /clients/to-do-follow-up/
-Además, se agregó el endpoint GET /GET /clients/has-active-debts/ para ver los clientes que tienen deudas activas (y así saber que id usar para obtener la respuesta del asistente donde menciona que no tiene acceso a financiamiento).
+Además, se agregó el endpoint GET /clients/has-active-debts/ para ver los clientes que tienen deudas activas (y así saber que id usar para obtener la respuesta del asistente donde menciona que no tiene acceso a financiamiento).
+
+# Supuestos
+
+- Supuse que un cliente que tiene deudas no necesariamente es moroso. Si por ejemplo un cliente tiene deudas que se deben pagar el 2025, aparece como deuda, pero no aparecerá en el endpoint GET /clients/has-active-debts/, sin embargo si es cualquier fecha anterior a la cual se hace la request, el cliente si es moroso.
+
+- Las deudas solo tienen fecha, las conversations (messages) tienen fecha y hora. Me pareció mas cercano a la realidad.
 
 # Explicación modelo utilizado
 
