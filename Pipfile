@@ -10,6 +10,9 @@ format = "black ."
 [packages]
 django = "*"
 djangorestframework = "*"
+django-environ = "*"
+whitenoise = "*"
+gunicorn = "*"
 
 [dev-packages]
 flake8 = "*"
