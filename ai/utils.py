@@ -10,20 +10,10 @@ api_key = os.getenv("OPENAI_KEY")
 client = OpenAI(api_key=api_key)
 
 def generate_ai_message(client_name, client_has_debts, model="gpt-4o"):
-    """
-    Genera un mensaje de AI basado en el estado del cliente y en el prompt de introducción.
-
-    :param client_name: Nombre del cliente.
-    :param client_has_debts: Booleano que indica si el cliente tiene deudas.
-    :param model: Modelo a utilizar.
-    :return: El texto generado por el modelo.
-    """
-    # Generar el mensaje inicial de `system`
     prompt = system_prompt(client_has_debts, client_name)
 
 
     try:
-        # Crear el contexto de conversación con `system` y `user`
         completion = client.chat.completions.create(
             model=model,
             messages=[
@@ -47,8 +37,6 @@ def generate_ai_message(client_name, client_has_debts, model="gpt-4o"):
                 }
             ]
         )
-        
-        # Extraer el contenido del mensaje generado por el `assistant`
         message_content = completion.choices[0].message.content
         return message_content
     

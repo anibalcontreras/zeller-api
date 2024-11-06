@@ -44,7 +44,7 @@ class ClientViewSet(viewsets.ModelViewSet):
         # Generar el mensaje usando OpenAI
         ai_message_content = generate_ai_message(client.name, client_has_debts)
 
-        # Guardar el mensaje en el modelo Conversation o Message
+        # Guardar el mensaje en el modelo Conversation
         Conversation.objects.create(
             client=client,
             text=ai_message_content,
